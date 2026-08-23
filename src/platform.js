@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { execSync, spawnSync } = require('child_process');
 
 const PLATFORM = os.platform();
 
@@ -136,14 +136,18 @@ function isRoot() {
 }
 
 function elevateAndRun(action) {
+  if (action !== 'localize' && action !== 'restore') {
+    throw new Error(`Invalid action: ${action}`);
+  }
   const entry = path.resolve(__dirname, '..', 'index.js');
   const projectDir = path.dirname(entry);
+  const safeFlag = action === 'localize' ? '--action=localize' : '--action=restore';
   const shellCmd = [
     `cd ${JSON.stringify(projectDir)}`,
-    `${JSON.stringify(process.execPath)} ${JSON.stringify(entry)} --action=${action}`,
+    `${JSON.stringify(process.execPath)} ${JSON.stringify(entry)} ${safeFlag}`,
   ].join(' && ');
   const script = `do shell script ${JSON.stringify(shellCmd)} with administrator privileges`;
-  execSync(`osascript -e ${JSON.stringify(script)}`, { stdio: 'inherit' });
+  spawnSync('osascript', ['-e', script], { stdio: 'inherit' });
 }
 
 function prepareAppForWrite(appBundlePath, filePaths) {
@@ -151,7 +155,7 @@ function prepareAppForWrite(appBundlePath, filePaths) {
 
   if (appBundlePath && fs.existsSync(appBundlePath)) {
     try {
-      execSync(`xattr -cr "${appBundlePath}"`, { stdio: 'pipe' });
+      spawnSync('xattr', ['-cr', appBundlePath], { stdio: 'pipe' });
     } catch {
       /* ignore */
     }
