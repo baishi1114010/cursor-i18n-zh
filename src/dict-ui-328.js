@@ -142,6 +142,36 @@ const ui328Dict = {
     'Cursor 会定期删除旧工作树以释放磁盘空间',
   'Cursor periodically removes old worktrees to free disk space. Tune how aggressively cleanup runs.':
     'Cursor 会定期删除旧工作树以释放磁盘空间。可调整清理强度。',
+
+  // ── Agent 输入框 / 账号菜单 / 模型选择器（3.28 截图补全）──
+  'Steer without interrupting': '引导而不打断',
+  'Send follow-up': '发送跟进',
+  'Send follow-up with subagent': '使用子智能体发送跟进',
+  'Get Cursor for iOS': '获取 Cursor iOS 版',
+  'Get Grok Bot': '获取 Grok Bot',
+  'Meet Grok Bot': '认识 Grok Bot',
+  'Contact Us': '联系我们',
+  Shortcuts: '快捷键',
+  'Report Issue': '报告问题',
+  Settings: '设置',
+  'Close Settings': '关闭设置',
+  'Cursor Models': 'Cursor 模型',
+  'Includes Cursor Grok and Composer': '包含 Cursor Grok 与 Composer',
+  Context: '上下文',
+  'Maximum context window size': '最大上下文窗口大小',
+  Thinking: '思考',
+  'Enable extended thinking for complex reasoning tasks': '为复杂推理任务启用扩展思考',
+  'Enable extended thinking for complex reasoning': '为复杂推理启用扩展思考',
+  Model: '模型',
+  // 以下短词仅作 UI 属性替换（不会全局替换枚举）
+  Fast: '快速',
+  Effort: '力度',
+  Low: '低',
+  Medium: '中',
+  High: '高',
+  'Extra High': '极高',
+  'Balanced quality and speed, recommended for most tasks':
+    '质量与速度平衡，推荐用于大多数任务',
 };
 
 module.exports = { ui328Dict };
