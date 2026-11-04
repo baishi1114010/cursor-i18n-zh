@@ -101,8 +101,9 @@ function applyTrickyReplacements(content) {
       zh: '在 Glass 模式下显示应用内警告级别通知。错误和信息类通知始终显示。',
     },
     {
-      regex: /Choose\s+\$\{[^}]+\}\s+for\s+pull\s+request\s+links\s+on\s+web\s+and\s+desktop/gi,
-      zh: '选择 ${D40(n)} 作为网页和桌面端拉取请求链接提供方',
+      // 保留原有 ${...} 表达式，禁止写死旧版本压缩函数名（会白屏）
+      regex: /Choose\s+(\$\{[^}]+\})\s+for\s+pull\s+request\s+links\s+on\s+web\s+and\s+desktop/gi,
+      zh: '选择 $1 作为网页和桌面端拉取请求链接提供方',
     },
     {
       regex: /\?"Show Cursor in menu bar"/g,
@@ -167,7 +168,7 @@ function applyTrickyReplacements(content) {
     // ── v1.2.0：套餐用量 / 规则列表 / 分支 等模板 ──
     { regex: /Usage limits reset on <!> \(<!>\)/g, zh: '用量额度将于 <!> 重置（<!>)' },
     { regex: /> day<!> left/g, zh: '> 天剩余<!>' },
-    { regex: /ae\(tt,\(\)=>l\(\)!==1\?"s":"",lt\)/g, zh: 'ae(tt,()=>"",lt)' },
+    // 禁止按旧版压缩变量名改写复数逻辑（跨版本会误伤）
     { regex: />% used<\/span>/g, zh: '>已使用</span>' },
     { regex: /% used · /g, zh: '% 已使用 · ' },
     { regex: /% used`/g, zh: '% 已使用`' },
@@ -222,6 +223,35 @@ function applyTrickyReplacements(content) {
       zh: '提交聊天，Enter 插入换行，主要操作移至 ${',
     },
     { regex: /label:`Submit with \$\{/g, zh: 'label:`使用 ${' },
+    // ── v1.3.1：Glass / 3.28 截图补全 ──
+    { regex: /="No Repo"/g, zh: '="无仓库"' },
+    { regex: /="New Project"/g, zh: '="新建项目"' },
+    { regex: /="Start from scratch"/g, zh: '="从零开始"' },
+    { regex: /="Agent Voice"/g, zh: '="智能体语音"' },
+    { regex: /="Status chimes"/g, zh: '="状态提示音"' },
+    { regex: /="Computer Name"/g, zh: '="电脑名称"' },
+    { regex: /="Unregister All"/g, zh: '="全部注销"' },
+    { regex: /="Enable Remote Control for this computer"/g, zh: '="为本机启用远程控制"' },
+    { regex: /="Allow agents on this computer to be controlled from your other devices"/g, zh: '="允许从你的其他设备控制本机上的智能体"' },
+    { regex: /="No devices are currently paired with this computer\."/g, zh: '="当前没有设备与此电脑配对。"' },
+    { regex: /="Remote Machine"/g, zh: '="远程机器"' },
+    { regex: /children:"Use Existing\.\.\."/g, zh: 'children:"使用已有…"' },
+    { regex: /children:"Narrow"/g, zh: 'children:"窄"' },
+    { regex: /children:"Wide"/g, zh: 'children:"宽"' },
+    { regex: /\?"保存中…":"Save"/g, zh: '?"保存中…":"保存"' },
+    { regex: /const q=g\?"保存中…":"Save"/g, zh: 'const q=g?"保存中…":"保存"' },
+    { regex: /return Jo\?"This PC":Kn\?"This Mac":"This Computer"/g, zh: 'return Jo?"本机 PC":Kn?"本机 Mac":"本机"' },
+    { regex: /return Va\?"This PC":wr\?"This Mac":"This Computer"/g, zh: 'return Va?"本机 PC":wr?"本机 Mac":"本机"' },
+    { regex: /\?"Search workspaces\.\.\.":"Search repos, cloud environments\.\.\."/g, zh: '?"搜索工作区…":"搜索仓库、云端环境…"' },
+    { regex: /placeholder:"Search Remote Machines\\u2026"/g, zh: 'placeholder:"搜索远程机器…"' },
+    { regex: /:"No remote machines yet\."/g, zh: ':"暂无远程机器。"' },
+    { regex: /"Data Sharing Enabled"/g, zh: '"数据共享已启用"' },
+    { regex: /r\?"Window Colors":"Colors"/g, zh: 'r?"窗口颜色":"颜色"' },
+    { regex: /n===void 0\?"More":n/g, zh: 'n===void 0?"更多":n' },
+    { regex: /s===void 0\?"Automations":s/g, zh: 's===void 0?"自动化":s' },
+    { regex: /auto:"Auto-detect"/g, zh: 'auto:"自动检测"' },
+    { regex: /columnHeader:"Repositories"/g, zh: 'columnHeader:"仓库"' },
+    { regex: /"aria-label":"Pinned"/g, zh: '"aria-label":"已固定"' },
   ];
 
   let result = content;

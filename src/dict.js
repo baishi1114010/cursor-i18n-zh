@@ -657,6 +657,7 @@ const riskyShortWords = {
 const { automationsDict } = require('./dict-automations');
 const { appearanceDict } = require('./dict-appearance');
 const { settingsPagesDict } = require('./dict-settings-pages');
-Object.assign(safeGlobalDict, automationsDict, appearanceDict, settingsPagesDict);
+const { ui328Dict } = require('./dict-ui-328');
+Object.assign(safeGlobalDict, automationsDict, appearanceDict, settingsPagesDict, ui328Dict);
 
 module.exports = { safeGlobalDict, riskyShortWords };

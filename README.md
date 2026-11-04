@@ -115,8 +115,13 @@ cursor-i18n-zh/
     ├── dict.js              # 主翻译字典
     ├── dict-automations.js  # Automations 专用字典
     ├── dict-appearance.js   # Appearance 专用字典
-    └── dict-settings-pages.js # Settings 七大页面补全字典
+    ├── dict-settings-pages.js # Settings 七大页面补全字典
+    └── dict-ui-328.js         # Cursor 3.28+ Glass/Voice/源码管理等截图补全
 ```
+
+### v1.3.2（2026-11-04）
+
+补全 3.28 截图未汉化文案：Glass 主页（项目/仓库/远程机器）、Settings 侧栏 Appearance/Voice/Source Control、语音页、远程控制、Computer Use、套餐用量等。
 
 ## 更新日志
 

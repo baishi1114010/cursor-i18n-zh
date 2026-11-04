@@ -6,7 +6,22 @@ const { applySettingsNav } = require('./settings-nav');
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-const safeEntries = Object.entries(safeGlobalDict).sort((a, b) => b[0].length - a[0].length);
+/**
+ * 单词语（OK/Error/Cloud/Copy…）不可做全局引号替换：
+ * Cursor/VS Code 大量使用 e[e.OK=1]="OK" 这类枚举反向映射，
+ * 全局替换会导致启动白屏。仅多词语/长句可安全全局替换。
+ */
+function isSafeForGlobalQuotedReplace(en) {
+  if (/\s/.test(en)) return true;
+  if (en.length >= 20) return true;
+  if (/(\.\.\.|…|\+|\/|&)/.test(en)) return true;
+  return false;
+}
+
+const allDictEntries = Object.entries(safeGlobalDict).sort((a, b) => b[0].length - a[0].length);
+const safeEntries = allDictEntries.filter(([en]) => isSafeForGlobalQuotedReplace(en));
+const promotedRiskyEntries = allDictEntries.filter(([en]) => !isSafeForGlobalQuotedReplace(en));
+
 const safePattern = safeEntries.map(([en]) => escapeRegExp(en)).join('|');
 const safeMegaRegex = safePattern ? new RegExp(`(["'\`])(${safePattern})\\1`, 'g') : null;
 
@@ -28,10 +43,17 @@ const uiProps = [
   'altText',
   'caption',
   'heading',
+  'accessibleLabel',
+  'aria-label',
 ];
 const uiPropsPattern = uiProps.join('|');
 
-const riskyRegexes = Object.entries(riskyShortWords).map(([en, zh]) => {
+const mergedRiskyWords = { ...riskyShortWords };
+for (const [en, zh] of promotedRiskyEntries) {
+  if (!(en in mergedRiskyWords)) mergedRiskyWords[en] = zh;
+}
+
+const riskyRegexes = Object.entries(mergedRiskyWords).map(([en, zh]) => {
   const escaped = escapeRegExp(en);
   return {
     en,

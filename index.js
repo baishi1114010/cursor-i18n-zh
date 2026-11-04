@@ -20,7 +20,7 @@ const {
 const { translateFile, fixMacGatekeeper } = require('./src/translate');
 const { configureLocale } = require('./src/locale');
 
-const VERSION = '1.3.0';
+const VERSION = '1.3.2';
 let customInstallPath = null;
 
 function getPaths() {
